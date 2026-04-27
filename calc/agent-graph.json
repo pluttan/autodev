@@ -1,0 +1,315 @@
+{
+  "positions": {
+    "acceptor": {
+      "x": 1312.0,
+      "y": -182.0
+    },
+    "arbiter": {
+      "x": 22.0,
+      "y": 842.0
+    },
+    "coder": {
+      "x": 486.0,
+      "y": 382.0
+    },
+    "contractor": {
+      "x": 118.0,
+      "y": -344.0
+    },
+    "designer": {
+      "x": 1002.0,
+      "y": -32.0
+    },
+    "planner": {
+      "x": -348.0,
+      "y": 516.0
+    },
+    "researcher": {
+      "x": 1360.0,
+      "y": 740.0
+    },
+    "tester": {
+      "x": 704.0,
+      "y": 152.0
+    },
+    "src_pending_backlog": {
+      "x": -768.0,
+      "y": 444.0
+    },
+    "src_all_backlog": {
+      "x": -770.0,
+      "y": 957.0
+    },
+    "src_all_tasks": {
+      "x": -776.0,
+      "y": 706.0
+    },
+    "out_backlog_items": {
+      "x": 24.0,
+      "y": 344.0
+    },
+    "src_pending_tasks": {
+      "x": -344.0,
+      "y": -136.0
+    },
+    "src_pending_backlog_for_contractor": {
+      "x": -346.0,
+      "y": -442.0
+    },
+    "out_tasks": {
+      "x": 1530.0,
+      "y": -435.75
+    },
+    "out_tasks_review": {
+      "x": 1746.0,
+      "y": -34.0
+    },
+    "out_git": {
+      "x": 590.0,
+      "y": -474.0
+    }
+  },
+  "edges": [
+    {
+      "id": "e_planner_researcher",
+      "source": "planner",
+      "target": "researcher",
+      "label": "needs intel"
+    },
+    {
+      "id": "e_planner_arbiter",
+      "source": "planner",
+      "target": "arbiter",
+      "label": "is goal done?"
+    },
+    {
+      "id": "e_contractor_planner",
+      "source": "contractor",
+      "target": "planner",
+      "label": "spec questions"
+    },
+    {
+      "id": "e_contractor_coder",
+      "source": "contractor",
+      "target": "coder",
+      "label": "task: code"
+    },
+    {
+      "id": "e_contractor_designer",
+      "source": "contractor",
+      "target": "designer",
+      "label": "task: ui"
+    },
+    {
+      "id": "e_contractor_tester",
+      "source": "contractor",
+      "target": "tester",
+      "label": "task: test"
+    },
+    {
+      "id": "e_contractor_acceptor",
+      "source": "contractor",
+      "target": "acceptor",
+      "label": "review please"
+    },
+    {
+      "id": "e_coder_researcher",
+      "source": "coder",
+      "target": "researcher",
+      "label": "deep research help"
+    },
+    {
+      "id": "e_designer_researcher",
+      "source": "designer",
+      "target": "researcher",
+      "label": "deep research help"
+    },
+    {
+      "id": "e_tester_researcher",
+      "source": "tester",
+      "target": "researcher",
+      "label": "deep research help"
+    },
+    {
+      "id": "e_src_backlog_planner",
+      "source": "src_pending_backlog",
+      "target": "planner",
+      "label": "current state"
+    },
+    {
+      "id": "e_planner_out_backlog",
+      "source": "planner",
+      "target": "out_backlog_items",
+      "label": "new items"
+    },
+    {
+      "id": "e_src_all_backlog_arbiter",
+      "source": "src_all_backlog",
+      "target": "arbiter",
+      "label": "full backlog history"
+    },
+    {
+      "id": "e_src_all_tasks_arbiter",
+      "source": "src_all_tasks",
+      "target": "arbiter",
+      "label": "full tasks history"
+    },
+    {
+      "id": "e_src_pending_backlog_for_contractor",
+      "source": "src_pending_backlog_for_contractor",
+      "target": "contractor",
+      "label": "next item to work"
+    },
+    {
+      "id": "e_src_tasks_contractor",
+      "source": "src_pending_tasks",
+      "target": "contractor",
+      "label": "in-flight tasks"
+    },
+    {
+      "id": "e_contractor_out_tasks",
+      "source": "contractor",
+      "target": "out_tasks",
+      "label": "decomposed"
+    },
+    {
+      "id": "e_acceptor_out_tasks_review",
+      "source": "acceptor",
+      "target": "out_tasks_review",
+      "label": "verdict update"
+    },
+    {
+      "id": "e_contractor_out_git",
+      "source": "contractor",
+      "target": "out_git",
+      "label": "commit + push (after accept)"
+    }
+  ],
+  "meta_nodes": [
+    {
+      "id": "src_pending_backlog",
+      "name": "src_pending_backlog",
+      "role": "FULL backlog (all statuses) \u2014 planner sees the whole evolving plan and only ADDS missing pieces; never reinvents from scratch",
+      "kind": "db",
+      "config": {
+        "mode": "read",
+        "table": "backlog_items"
+      },
+      "position": {
+        "x": -768.0,
+        "y": 444.0
+      }
+    },
+    {
+      "id": "src_all_backlog",
+      "name": "src_all_backlog",
+      "role": "full backlog history (all statuses) \u2014 for arbiter to judge progress against goal",
+      "kind": "db",
+      "config": {
+        "mode": "read",
+        "table": "backlog_items"
+      },
+      "position": {
+        "x": -770.0,
+        "y": 957.0
+      }
+    },
+    {
+      "id": "src_all_tasks",
+      "name": "src_all_tasks",
+      "role": "full tasks history (all statuses) \u2014 for arbiter to count done vs in-flight",
+      "kind": "db",
+      "config": {
+        "mode": "read",
+        "table": "tasks"
+      },
+      "position": {
+        "x": -776.0,
+        "y": 706.0
+      }
+    },
+    {
+      "id": "out_backlog_items",
+      "name": "out_backlog_items",
+      "role": "planner writes new BacklogItems here",
+      "kind": "db",
+      "config": {
+        "mode": "write",
+        "table": "backlog_items"
+      },
+      "position": {
+        "x": 24.0,
+        "y": 344.0
+      }
+    },
+    {
+      "id": "src_pending_tasks",
+      "name": "src_pending_tasks",
+      "role": "in-flight tasks for the contractor to track",
+      "kind": "db",
+      "config": {
+        "mode": "read",
+        "table": "tasks",
+        "query": "status IN ('pending','in_progress')"
+      },
+      "position": {
+        "x": -344.0,
+        "y": -136.0
+      }
+    },
+    {
+      "id": "src_pending_backlog_for_contractor",
+      "name": "src_pending_backlog_for_contractor",
+      "role": "pending backlog items \u2014 contractor picks ONE at a time (lowest numeric prefix or highest priority)",
+      "kind": "db",
+      "config": {
+        "mode": "read",
+        "table": "backlog_items",
+        "query": "status = 'pending'"
+      },
+      "position": {
+        "x": -346.0,
+        "y": -442.0
+      }
+    },
+    {
+      "id": "out_tasks",
+      "name": "out_tasks",
+      "role": "contractor writes decomposed tasks here",
+      "kind": "db",
+      "config": {
+        "mode": "write",
+        "table": "tasks"
+      },
+      "position": {
+        "x": 1530.0,
+        "y": -435.75
+      }
+    },
+    {
+      "id": "out_tasks_review",
+      "name": "out_tasks_review",
+      "role": "acceptor updates task status (done | needs_rework)",
+      "kind": "db",
+      "config": {
+        "mode": "write",
+        "table": "tasks"
+      },
+      "position": {
+        "x": 1746.0,
+        "y": -34.0
+      }
+    },
+    {
+      "id": "out_git",
+      "name": "out_git",
+      "role": "git commit + push sink \u2014 contractor uses git_commit_push MCP tool after the acceptor accepts a BacklogItem",
+      "kind": "git",
+      "config": {},
+      "position": {
+        "x": 590.0,
+        "y": -474.0
+      }
+    }
+  ]
+}

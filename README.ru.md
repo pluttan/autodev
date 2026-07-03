@@ -1,15 +1,9 @@
-![Header](header.png)
-
 <div align="center">
 
 # autodev
 
 **Автономная мультиагентная система разработки на базе opencode + DeepSeek**
 
-[![License](https://img.shields.io/badge/license-MIT-2C2C2C?style=for-the-badge&labelColor=1E1E1E)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.12-2C2C2C?style=for-the-badge&logo=python&labelColor=1E1E1E)]()
-[![FastAPI](https://img.shields.io/badge/FastAPI-backend-2C2C2C?style=for-the-badge&logo=fastapi&labelColor=1E1E1E)]()
-[![React](https://img.shields.io/badge/React-18-2C2C2C?style=for-the-badge&logo=react&labelColor=1E1E1E)]()
 
 </div>
 
@@ -46,22 +40,15 @@
 
 </div>
 
-## ■ Архитектура
+## ■ Как это работает
 
 ```
-Browser  --REST/WS-->  FastAPI :8765  --/mcp/mcp-->  agents (opencode)
-                         |                              |
-                         v                              v
-                      SQLite                     docker sandbox
-                         |                       (opencode-serve)
-                         v                              |
-              Orchestrator (state machine)              v
-                         |                        DeepSeek V4 API
-                         v
-                 Managed projects
+1. Браузер подключается к FastAPI :8765 через REST/WebSocket; оркестратор тикает planner и contractor для каждого проекта в цикле конечного автомата (idle → planning → contracting → idle).
+2. Агенты planner и contractor запускаются внутри эфемерных docker-контейнеров (opencode-serve) и общаются с хостом через MCP-сервер autodev-agents по адресу /mcp/mcp.
+3. Первичные агенты диспатчат подагентов (coder, designer, tester, researcher, arbiter, acceptor) через MCP-инструменты call / call_async, с пермишенами, выведенными из графа потоков.
+4. Каждый агент вызывает DeepSeek V4; результаты, транскрипты и стоимость в токенах сохраняются в SQLite и мгновенно отправляются в React UI через WebSocket pub/sub.
+5. После того как acceptor одобряет элемент бэклога, contractor вызывает git_commit_push для коммита и пуша изменений с использованием бот-идентификатора git для каждого проекта.
 ```
-
-Оркестратор тикает planner/contractor для каждого проекта; они передают работу подагентам через MCP-инструменты `call` / `call_async`. Каждый проект получает один docker-контейнер (переиспользуется между запусками); агенты обращаются к серверу autodev MCP обратно на хосте по адресу `/mcp/mcp`.
 
 ## ■ Скриншоты
 
@@ -73,7 +60,7 @@ Browser  --REST/WS-->  FastAPI :8765  --/mcp/mcp-->  agents (opencode)
 
 </div>
 
-## ■ Запуск
+## ■ Использование
 
 ```bash
 # Backend
